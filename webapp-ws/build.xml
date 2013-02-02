@@ -1,0 +1,11 @@
+<project name="webapp-ws" default="help" basedir=".">
+
+<property name="build.sysclasspath" value="last"/>
+
+<target name="help">
+		<echo message="Axis2 build targets:" />
+    <echo message="wsdl2java   - Generate Server and Client Stub Classes" />
+</target>
+
+
+</project>
