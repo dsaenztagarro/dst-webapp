@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- This file was auto-generated from WSDL --><!-- by the Apache Axis2 version: 1.6.1  Built on : Aug 31, 2011 (12:22:40 CEST) --><serviceGroup>
+    <service name="WSComponentService">
+        <messageReceivers>
+            <messageReceiver mep="http://www.w3.org/ns/wsdl/in-out" class="com.davlanca.webapp.ws.Axis2ServiceMessageReceiverInOut"/>
+        </messageReceivers>
+        <parameter name="ServiceClass">com.davlanca.webapp.ws.WSComponentServiceImpl</parameter>
+        <parameter name="useOriginalwsdl">true</parameter>
+        <parameter name="modifyUserWSDLPortAddress">true</parameter>
+        <operation name="createPeople" mep="http://www.w3.org/ns/wsdl/in-out" namespace="http://ws.webapp.davlanca.com">
+            <actionMapping>urn:createPeople</actionMapping>
+            <outputActionMapping>urn:createPeopleResponse</outputActionMapping>
+        </operation>
+    </service>
+</serviceGroup>

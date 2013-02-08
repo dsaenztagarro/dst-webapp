@@ -1,35 +1,39 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <artifactId>webapp</artifactId>
-    <groupId>com.davlanca</groupId>
-    <version>0.0.1-SNAPSHOT</version>
-  </parent>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>webapp</artifactId>
+		<groupId>com.davlanca</groupId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>webapp-ws</artifactId>
+	<packaging>jar</packaging>
+
+	<name>webapp Axis2 module</name>
+
+	<properties>
+		<axis2.wsdl.dir>src/main/resources/wsdl/</axis2.wsdl.dir>
+		<axis2.wsdl.fileName>WSComponentService_2_0.wsdl</axis2.wsdl.fileName>
+		<axis2.service.name>Axis2Service</axis2.service.name>
+		<axis2.service.className>com.davlanca.webapp.ws.WSComponentService</axis2.service.className>
+		<axis2.server.stub.dir>${project.build.directory}/axis2/server-stub/src/</axis2.server.stub.dir>
+		<axis2.client.stub.dir>${project.build.directory}/axis2/client-stub/src/</axis2.client.stub.dir>
+		<axis2.service.xml.dir>${workspace.dir}/webapp/webapp-web/src/main/webapp/WEB-INF/services/WSComponentService/META-INF/</axis2.service.xml.dir>
+		<axis2.http.port>8080</axis2.http.port>
+		<axis2.https.port>8443</axis2.https.port>
+	</properties>
   
-  <artifactId>webapp-ws</artifactId>
-  <packaging>jar</packaging>
-  
-  <name>webapp Axis2 module</name>
-  
-  <properties>
-  	<axis2.wsdl.dir>${workspace.dir}/webapp/webapp-web/src/main/webapp/</axis2.wsdl.dir>
-  	<axis2.wsdl.fileName>WebappService.wsdl</axis2.wsdl.fileName>
-	  <axis2.service.name>Axis2Service</axis2.service.name>
-	  <axis2.service.className>com.davlanca.webapp.ws.WebappService</axis2.service.className>
-  	<axis2.server.stub.dir>${project.build.directory}/axis2/server-stub/src/</axis2.server.stub.dir>
-  	<axis2.client.stub.dir>${project.build.directory}/axis2/client-stub/src/</axis2.client.stub.dir>
-  </properties>
-  
-  <dependencies>
-      <!-- Dependency on the EJB module so we can use it's services if needed -->
-      <dependency>
-         <groupId>com.davlanca</groupId>
-         <artifactId>webapp-ejb</artifactId>
-         <type>ejb</type>
-         <scope>provided</scope>
-      </dependency> 
-      
-      <!-- Axis2 -->
+	<dependencies>
+		<!-- Dependency on the EJB module so we can use it's services if needed -->
+		<dependency>
+			<groupId>com.davlanca</groupId>
+			<artifactId>webapp-ejb</artifactId>
+			<type>ejb</type>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- Axis2 -->
 		<dependency>
 			<groupId>org.apache.axis2</groupId>
 			<artifactId>axis2-kernel</artifactId>
@@ -59,208 +63,216 @@
 			<groupId>org.apache.axis2</groupId>
 			<artifactId>axis2-java2wsdl</artifactId>
 			<version>${axis2.version}</version>
-		</dependency>      
-		 
-  </dependencies>
-  
-  <build>
-    <plugins>
-    	<!-- Axis2 (step1 - java2wsdl)
-      <plugin>
-        <groupId>org.apache.axis2</groupId>
-        <artifactId>axis2-java2wsdl-maven-plugin</artifactId>
-        <version>1.6.2</version>
-        <configuration>
-          <className>com.davlanca.webapp.ws.WebappService</className>
-          <outputFileName>../webapp-web/src/main/webapp/WebappService.wsdl</outputFileName>
-        </configuration>
-        <executions>
-          <execution>
-          	<phase>process-classes</phase>
-            <goals>
-              <goal>java2wsdl</goal>
-            </goals>
-          </execution>
-         </executions>
-      </plugin>
-      -->
-			<!-- Axis2 (step2 - wsdl2code)
+		</dependency>
+
+	</dependencies>
+
+	<build>
+<!-- 
+	    <resources>
+	        <resource>
+	           <directory>src/main/resources</directory>
+	           <excludes>
+	               <exclude>wsdl/*</exclude>
+	           </excludes>
+	        </resource>
+	    </resources>
+-->
+		<plugins>
+					
 			<plugin>
-				<groupId>org.apache.axis2</groupId>
-				<artifactId>axis2-wsdl2code-maven-plugin</artifactId>
-				<version>1.4</version>
+				<artifactId>maven-antrun-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>axis2-ws-server-stub</id>
-						<phase>process-classes</phase>
-						<goals>
-							<goal>wsdl2code</goal>
-						</goals>
+						<id>copy-axis2-ws-stub</id>
+						<phase>generate-sources</phase>
 						<configuration>
-							<packageName>com.davlanca.webapp.ws</packageName>
-							<wsdlFile>${axis2.wsdl.path}</wsdlFile>
-							<databindingName>xmlbeans</databindingName>
-							<generateServerSide>true</generateServerSide>
-							<generateServicesXml>true</generateServicesXml>
-							<syncMode>sync</syncMode>
-							<flattenFiles>true</flattenFiles>
-							<outputDirectory>${axis2.server.stub.dir}</outputDirectory>
+							<tasks>
+      					<path id="compile_classpath" refid="maven.compile.classpath" />
+								
+								<mkdir dir="target/axis2-interface" />
+			
+								<javac fork="true" executable="${env.JAVA_HOME}/bin/javac" srcdir="src/main/java/com/davlanca/webapp/ws/" destdir="target/axis2-interface" >
+									<classpath refid="maven.dependency.classpath"/>
+									<include name="**/WSComponentService.java"/>
+								</javac>
+								
+								<echo message="current_dir: ${user.dir}" />
+								
+								<path id="java2wsdl.path">
+         					<path refid="compile_classpath" />
+         					<pathelement location="target/axis2-interface/" />
+       					</path>
+								
+								<java classname="org.apache.ws.java2wsdl.Java2WSDL" fork="true" 
+									classpathref="java2wsdl.path">
+									<arg line="-o ${axis2.wsdl.dir}" />
+									<arg line="-of ${axis2.wsdl.fileName}" />
+									<arg line="-u literal" />
+									<arg line="-style DOCUMENT" />
+									<arg line="-wv 2.0" />
+									<arg line="-sn ${axis2.service.name}" />
+									<arg line="-cn ${axis2.service.className}" />
+								</java>
+
+								<java classname="org.apache.axis2.wsdl.WSDL2Java" fork="true"
+									classpathref="compile_classpath">
+									<arg line="-uri ${axis2.wsdl.dir}${axis2.wsdl.fileName}" />
+									<arg line="-s" /><!-- emit server-side bindings for web service -->
+									<arg line="-ss" />
+									<arg line="-sd" />
+									<arg line="-uw" />
+									<arg line="-sd" />
+									<arg line="-ssi" />
+									<arg line="-ap" />
+									<arg line="-g" />
+									<arg line="-wv 2.0" />
+									<arg line="-l java" />
+									<arg line="-p com.davlanca.webapp.ws" />
+									<arg line="-d adb" />
+									<arg line="-f" />
+									<arg line="-t" /><!-- emit junit testcase class for web service -->
+									<arg line="-o ${axis2.server.stub.dir}" />
+								</java>
+
+								<java classname="org.apache.axis2.wsdl.WSDL2Java" fork="true"
+									classpathref="compile_classpath">
+									<arg line="-uri ${axis2.wsdl.dir}${axis2.wsdl.fileName}" />
+									<arg line="-s" />
+									<arg line="-uw" />
+									<arg line="-u" />
+									<arg line="-wv 2.0" />
+									<arg line="-l java" />
+									<arg line="-p com.davlanca.webapp.ws" />
+									<arg line="-d adb" />
+									<arg line="-f" />
+									<arg line="-o ${axis2.client.stub.dir}" />
+								</java>
+
+							</tasks>
 						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
 					</execution>
-					<execution>
-						<id>axis2-ws-client-stub</id>
-						<phase>process-classes</phase>
-						<goals>
-							<goal>wsdl2code</goal>
-						</goals>
-						<configuration>
-							<packageName>com.davlanca.webapp.ws</packageName>
-							<wsdlFile>${axis2.wsdl.path}</wsdlFile>
-							<databindingName>xmlbeans</databindingName>
-							<generateServerSide>false</generateServerSide>
-							<generateServicesXml>true</generateServicesXml>
-							<syncMode>sync</syncMode>
-							<flattenFiles>true</flattenFiles>
-							<outputDirectory>${axis2.client.stub.dir}</outputDirectory>
-						</configuration>
-					</execution>					
 				</executions>
 			</plugin>
-			-->
-			<plugin>
-        <artifactId>maven-antrun-plugin</artifactId>
-				<executions>
-				  <execution>
-				  	<id>copy-axis2-ws-stub</id>
-				    <phase>process-classes</phase>
-				    <configuration>
-				      <tasks>
-				      	<path id="compile_classpath" refid="maven.compile.classpath"/>
-				      	<path id="axis2_wsdl_path" refid="axis2.wsdl.path" />
-				      	
-				      	<java classname="org.apache.ws.java2wsdl.Java2WSDL" fork="true" classpathref="compile_classpath">
-				      		<arg line="-o ${axis2.wsdl.dir}"/>
-				      		<arg line="-of ${axis2.wsdl.fileName}" />
-				      		<arg line="-u literal"/>
-				      		<arg line="-style DOCUMENT"/>
-				      		<arg line="-wv 2.0"/>
-				      		<arg line="-sn ${axis2.service.name}" />
-				      		<arg line="-cn ${axis2.service.className}" />
-				      	</java>
-				      	
-				        <java classname="org.apache.axis2.wsdl.WSDL2Java" fork="true" classpathref="compile_classpath">
-				            <arg line="-uri ${axis2.wsdl.dir}${axis2.wsdl.fileName}"/>
-										<arg line="-s"/><!-- emit server-side bindings for web service -->
-				            <arg line="-ss"/>
-				        		<arg line="-sd"/>
-										<arg line="-uw"/>
-				            <arg line="-sd"/>
-										<arg line="-ssi"/>
-				            <arg line="-ap"/>
-				        		<arg line="-g"/>
-				        		<arg line="-wv 2.0"/>
-										<arg line="-l java"/>
-				            <arg line="-p com.davlanca.webapp.ws.axis2"/>
-				        		<arg line="-d adb"/>
-				        		<arg line="-f" />
-				        		<arg line="-t" /><!-- emit junit testcase class for web service -->
-				            <arg line="-o ${axis2.server.stub.dir}"/>
-				        </java>
-				        
-				        <java classname="org.apache.axis2.wsdl.WSDL2Java" fork="true" classpathref="compile_classpath">
-				            <arg line="-uri ${axis2.wsdl.dir}${axis2.wsdl.fileName}"/>
-										<arg line="-s"/>
-				            <arg line="-uw"/>
-				            <arg line="-u"/>
-				        		<arg line="-wv 2.0"/>
-										<arg line="-l java"/>
-				            <arg line="-p com.davlanca.webapp.ws.axis2"/>
-				        		<arg line="-d adb"/>
-				        		<arg line="-f" />
-				            <arg line="-o ${axis2.client.stub.dir}"/>
-				        </java>				      
-				        				      
-				      	<echo>Copying axis2.server.stub folder</echo>
-								<copy todir="${basedir}/src/main/java" overwrite="true">
-								 	<fileset dir="${axis2.server.stub.dir}" includes="com/**/*" excludes=".cvs"/>
-								</copy>
-								
-								<echo>Copying axis2.client.stub folder</echo>
-								<copy todir="${axis2.client.stub.path}" overwrite="true">
-								 	<fileset dir="${axis2.client.stub.dir}" includes="com/**/*" excludes=".cvs" />
-								</copy>
-																			      	
-				      </tasks>
-						</configuration>
-						<goals>
-            	<goal>run</goal>
-            </goals>						
-					</execution>
-				</executions>
-			</plugin>        
-			
+
 			<plugin>
 				<groupId>com.google.code.maven-replacer-plugin</groupId>
 				<artifactId>replacer</artifactId>
 				<version>1.5.2</version>
 				<executions>
+					
 					<execution>
-					    <phase>prepare-package</phase>
-					    <goals>
-					        <goal>replace</goal>
-					    </goals>                   
+						<id>replace-ewifcomponentservicestub</id>
+						<phase>process-sources</phase>
+						<goals><goal>replace</goal></goals>
+						<configuration>
+							<file>${axis2.client.stub.dir}/com/davlanca/webapp/ws/Axis2ServiceStub.java</file>
+							<regex>false</regex>
+							<replacements>
+								<replacement>
+									<token>_operationClient.getOptions().setExceptionToBeThrownOnSOAPFault(true);</token>
+									<value>
+										_operationClient.getOptions().setExceptionToBeThrownOnSOAPFault(true);
+										_operationClient.getOptions().setProperty(HTTPConstants.CHUNKED, false);
+										_operationClient.getOptions().setSoapVersionURI(org.apache.axiom.soap.SOAP11Constants.SOAP_ENVELOPE_NAMESPACE_URI);
+									</value>
+								</replacement>
+							</replacements>
+						</configuration>
+					</execution>
+					
+					<execution>
+						<id>replace-service-xml</id>
+						<phase>process-sources</phase>
+						<goals><goal>replace</goal></goals>
+						<configuration>
+							<file>${axis2.server.stub.dir}/services.xml</file>
+							<regex>false</regex>
+							<replacements>
+								<replacement>
+									<token>com.davlanca.webapp.ws.Axis2ServiceSkeleton</token>
+									<value>com.davlanca.webapp.ws.WSComponentServiceImpl</value>
+								</replacement>
+								<replacement>
+									<token>"Axis2Service"</token>
+									<value>"WSComponentService"</value>
+								</replacement>
+							</replacements>
+						</configuration>
+					</execution>
+					
+				</executions>
+			</plugin>
+			
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<tasks>
+								<copy todir="${basedir}/src/main/java" overwrite="true">
+									<fileset dir="${axis2.server.stub.dir}" includes="com/**/*"
+										excludes=".cvs" />
+								</copy>
+								
+								<copy todir="${axis2.client.stub.path}" overwrite="true">
+									<fileset dir="${axis2.client.stub.dir}" includes="com/**/*"
+										excludes=".cvs" />
+								</copy>
+
+								<copy todir="${axis2.service.xml.dir}" overwrite="true">
+									<fileset dir="${axis2.server.stub.dir}" includes="services.xml" />
+								</copy>
+								
+							</tasks>
+						</configuration>
 					</execution>
 				</executions>
-				<configuration>
-					<file>${axis2.server.stub.dir}/services.xml</file>
-					<replacements>
-					    <replacement>
-					        <token>com.davlanca.webapp.ws.axis2.Axis2ServiceSkeleton</token>
-					        <value>com.davlanca.webapp.ws.WebappServiceImpl</value>
-					    </replacement>
-					    <replacement>
-					    	<token>"useOriginalwsdl">true</token>
-					    	<value>"useOriginalwsdl">false</value>
-							</replacement>		       
-					</replacements>
-				</configuration>
 			</plugin>
-			     
-    </plugins>
-    
-    <pluginManagement>
-    	<plugins>
-    		<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
-    		<plugin>
-    			<groupId>org.eclipse.m2e</groupId>
-    			<artifactId>lifecycle-mapping</artifactId>
-    			<version>1.0.0</version>
-    			<configuration>
-    				<lifecycleMappingMetadata>
-    					<pluginExecutions>
-    						<pluginExecution>
-    							<pluginExecutionFilter>
-    								<groupId>org.apache.axis2</groupId>
-    								<artifactId>
-    									axis2-java2wsdl-maven-plugin
-    								</artifactId>
-    								<versionRange>
-    									[1.6.2,)
-    								</versionRange>
-    								<goals>
-    									<goal>java2wsdl</goal>
-    								</goals>
-    							</pluginExecutionFilter>
-    							<action>
-    								<ignore></ignore>
-    							</action>
-    						</pluginExecution>
-    					</pluginExecutions>
-    				</lifecycleMappingMetadata>
-    			</configuration>
-    		</plugin>
-    	</plugins>
-    </pluginManagement>
-  </build>  
-  
+
+		</plugins>
+
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.apache.axis2</groupId>
+										<artifactId>
+											axis2-java2wsdl-maven-plugin
+										</artifactId>
+										<versionRange>
+											[1.6.2,)
+										</versionRange>
+										<goals>
+											<goal>java2wsdl</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
 </project>

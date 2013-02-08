@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?><wsdl2:description xmlns:wsdl2="http://www.w3.org/ns/wsdl" xmlns:ns1="http://org.apache.axis2/xsd" xmlns:ns="http://ws.webapp.davlanca.com" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:wrpc="http://www.w3.org/ns/wsdl/rpc" xmlns:wsoap="http://www.w3.org/ns/wsdl/soap" xmlns:tns="http://ws.webapp.davlanca.com" xmlns:wsdlx="http://www.w3.org/ns/wsdl-extensions" xmlns:ax21="http://model.webapp.davlanca.com/xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:whttp="http://www.w3.org/ns/wsdl/http" targetNamespace="http://ws.webapp.davlanca.com">
+    <wsdl2:types>
+        <xs:schema xmlns:ax22="http://model.webapp.davlanca.com/xsd" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://ws.webapp.davlanca.com">
+            <xs:import namespace="http://model.webapp.davlanca.com/xsd"/>
+            <xs:element name="createPeople">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="args0" nillable="true" type="xs:string"/>
+                        <xs:element minOccurs="0" name="args1" nillable="true" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="createPeopleResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="return" nillable="true" type="ax21:People"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
+        <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://model.webapp.davlanca.com/xsd">
+            <xs:complexType name="People">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="firstName" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="lastName" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="peopleID" type="xs:int"/>
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+    </wsdl2:types>
+    <wsdl2:interface name="ServiceInterface">
+        <wsdl2:operation name="createPeople" style="http://www.w3.org/ns/wsdl/style/rpc" wrpc:signature="args0 #in args1 #in return #return " pattern="http://www.w3.org/ns/wsdl/in-out">
+            <wsdl2:input element="ns:createPeople" wsaw:Action="urn:createPeople"/>
+            <wsdl2:output element="ns:createPeopleResponse" wsaw:Action="urn:createPeopleResponse"/>
+        </wsdl2:operation>
+    </wsdl2:interface>
+    <wsdl2:binding name="Axis2ServiceHttpBinding" interface="tns:ServiceInterface" whttp:methodDefault="POST" type="http://www.w3.org/ns/wsdl/http">
+        <wsdl2:operation ref="tns:createPeople" whttp:location="createPeople">
+            <wsdl2:input/>
+            <wsdl2:output/>
+        </wsdl2:operation>
+    </wsdl2:binding>
+    <wsdl2:binding name="Axis2ServiceSoap12Binding" interface="tns:ServiceInterface" type="http://www.w3.org/ns/wsdl/soap" wsoap:version="1.2">
+        <wsdl2:operation ref="tns:createPeople" wsoap:action="urn:createPeople">
+            <wsdl2:input/>
+            <wsdl2:output/>
+        </wsdl2:operation>
+    </wsdl2:binding>
+    <wsdl2:binding name="Axis2ServiceSoap11Binding" interface="tns:ServiceInterface" type="http://www.w3.org/ns/wsdl/soap" wsoap:version="1.1">
+        <wsdl2:operation ref="tns:createPeople" wsoap:action="urn:createPeople">
+            <wsdl2:input/>
+            <wsdl2:output/>
+        </wsdl2:operation>
+    </wsdl2:binding>
+    <wsdl2:service name="Axis2Service" interface="tns:ServiceInterface">
+        <wsdl2:endpoint name="Axis2ServiceHttpSoap11Endpoint" binding="tns:Axis2ServiceSoap11Binding" address="http://localhost:8080/axis2/services/Axis2Service"/>
+        <wsdl2:endpoint name="Axis2ServiceHttpEndpoint" binding="tns:Axis2ServiceHttpBinding" address="http://localhost:8080/axis2/services/Axis2Service"/>
+        <wsdl2:endpoint name="Axis2ServiceHttpSoap12Endpoint" binding="tns:Axis2ServiceSoap12Binding" address="http://localhost:8080/axis2/services/Axis2Service"/>
+    </wsdl2:service>
+</wsdl2:description>
