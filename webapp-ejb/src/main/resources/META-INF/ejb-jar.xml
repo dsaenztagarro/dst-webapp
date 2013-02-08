@@ -1,15 +1,70 @@
 <?xml version="1.0"?>
-<!DOCTYPE ejb-jar PUBLIC "-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 2.0//EN" "http://java.sun.com/j2ee/dtds/ejb-jar_2_0.dtd">
-<ejb-jar>
+<ejb-jar id="ejb-jar_ID" version="2.1" 
+     xmlns="http://java.sun.com/xml/ns/j2ee"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/ejb-jar_2_1.xsd">
   <enterprise-beans>
     <session>
       <ejb-name>TestBean</ejb-name>
-      <home>com.davlanca.webapp.framework.ejb.test.TestBeanLocal</home>
-      <remote>com.davlanca.webapp.framework.ejb.test.TestBeanRemote</remote>
-      <ejb-class>com.davlanca.webapp.framework.ejb.test.TestBean</ejb-class>
+      <home>com.davlanca.webapp.ejb.test.TestBeanLocal</home>
+      <remote>com.davlanca.webapp.ejb.test.TestBeanRemote</remote>
+      <ejb-class>com.davlanca.webapp.ejb.test.TestBean</ejb-class>
       <session-type>Stateless</session-type>
       <transaction-type>Container</transaction-type>
     </session>
+    
+    <session>
+      <ejb-name>QueuePublisherBean</ejb-name>
+      <home>com.davlanca.webapp.ejb.publisher.queue.QueuePublisherBeanLocal</home>
+      <remote>com.davlanca.webapp.ejb.publisher.queue.QueuePublisherBeanRemote</remote>
+      <ejb-class>com.davlanca.webapp.ejb.publisher.queue.QueuePublisherBean</ejb-class>
+      <session-type>Stateless</session-type>
+      <transaction-type>Container</transaction-type>
+    </session>
+
+    <session>
+      <ejb-name>TopicPublisherBean</ejb-name>
+      <home>com.davlanca.webapp.ejb.publisher.topic.TopicPublisherBeanLocal</home>
+      <remote>com.davlanca.webapp.ejb.publisher.topic.TopicPublisherBeanRemote</remote>
+      <ejb-class>com.davlanca.webapp.ejb.publisher.topic.TopicPublisherBean</ejb-class>
+      <session-type>Stateless</session-type>
+      <transaction-type>Container</transaction-type>
+    </session>
+
+    <message-driven>
+      <ejb-name>QueueMDB</ejb-name>
+      <ejb-class>com.davlanca.webapp.ejb.jms.QueueMessageDrivenBean</ejb-class>
+      <transaction-type>Container</transaction-type>
+		<message-destination-type>javax.jms.Queue</message-destination-type>
+		<activation-config>
+		     <activation-config-property>
+		          <activation-config-property-name>destinationType</activation-config-property-name>
+		          <activation-config-property-value>javax.jms.Queue</activation-config-property-value>
+		     </activation-config-property>
+		     <activation-config-property>
+		          <activation-config-property-name>destination</activation-config-property-name>
+		          <activation-config-property-value>queue/test</activation-config-property-value>
+		     </activation-config-property>
+		</activation-config>
+    </message-driven>
+    
+    <message-driven>
+      <ejb-name>TopicMDB</ejb-name>
+      <ejb-class>com.davlanca.webapp.ejb.jms.TopicMessageDrivenBean</ejb-class>
+      <transaction-type>Container</transaction-type>
+		<message-destination-type>javax.jms.Topic</message-destination-type>
+		<activation-config>
+		     <activation-config-property>
+		          <activation-config-property-name>destinationType</activation-config-property-name>
+		          <activation-config-property-value>javax.jms.Topic</activation-config-property-value>
+		     </activation-config-property>
+		     <activation-config-property>
+		          <activation-config-property-name>destination</activation-config-property-name>
+		          <activation-config-property-value>topic/test</activation-config-property-value>
+		     </activation-config-property>
+		</activation-config>
+    </message-driven>
+            
    </enterprise-beans>
    
    <assembly-descriptor>

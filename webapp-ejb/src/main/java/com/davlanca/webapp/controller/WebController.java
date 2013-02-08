@@ -2,13 +2,12 @@ package com.davlanca.webapp.controller;
 
 import java.util.HashMap;
 import java.util.Properties;
-import java.util.ResourceBundle;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.rmi.PortableRemoteObject;
 
-import com.davlanca.webapp.framework.ejb.test.TestBeanRemote;
+import com.davlanca.webapp.ejb.test.TestBeanRemote;
 
 public class WebController {
 	
@@ -16,7 +15,7 @@ public class WebController {
 		
 		HashMap com = null;
 		try {
-			ResourceBundle propertyBundle = ResourceBundle.getBundle("chiselConfig");
+			//ResourceBundle propertyBundle = ResourceBundle.getBundle("chiselConfig");
 			//String INITIAL_CONTEXT_FACTORY = propertyBundle.getString("chisel.initial.context.factory.class.jboss");
 			String INITIAL_CONTEXT_FACTORY = "org.jboss.as.naming.InitialContextFactory";
 			
@@ -28,9 +27,10 @@ public class WebController {
 			prop.put(Context.URL_PKG_PREFIXES, "org.jboss.naming:org.jnp.interfaces");
 			
 			InitialContext jndiContext =  new InitialContext(prop);
-			System.out.println(">>Obtenido un contexto JNDI <<");
+			System.out.println(">>Obtenido un contexto JNDI");
 			
-			String jndiRef = "java:app/eartest-ejb-0.0.1-SNAPSHOT/TestBean!com.whitestone.chisel.framework.ejb.test.TestBeanRemote";
+			String jndiRef = "java:app/webapp-ejb-0.0.1-SNAPSHOT/TestBean!com.davlanca.webapp.ejb.test.TestBeanRemote";
+			//String jndiRef = "java:module/TestBean!com.whitestone.chisel.framework.ejb.test.TestBeanRemote";
 			Object ref = jndiContext.lookup(jndiRef);
 			System.out.println(">> Obtenida referencia al bean \"TestBean\"");
 			

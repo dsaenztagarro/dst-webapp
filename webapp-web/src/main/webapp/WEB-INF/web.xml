@@ -3,13 +3,21 @@
   <servlet>
     <display-name>ActionBackendServlet</display-name>
     <servlet-name>ActionBackendServlet</servlet-name>
-    <servlet-class>com.davlanca.webapp.util.ActionBackendServlet</servlet-class>
+    <servlet-class>com.davlanca.webapp.servlet.ActionBackendServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>ActionBackendServlet</servlet-name>
     <url-pattern>/ActionBackendServlet</url-pattern>
   </servlet-mapping>
-  
+  <servlet>
+    <display-name>MessageServlet</display-name>
+    <servlet-name>MessageServlet</servlet-name>
+    <servlet-class>com.davlanca.webapp.servlet.MessageServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MessageServlet</servlet-name>
+    <url-pattern>/MessageServlet</url-pattern>
+  </servlet-mapping>  
 	<servlet>
 		<display-name>Apache-Axis Servlet</display-name>
 		<servlet-name>AxisServlet</servlet-name>
