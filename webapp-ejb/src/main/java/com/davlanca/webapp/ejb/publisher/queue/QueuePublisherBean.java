@@ -77,7 +77,7 @@ public class QueuePublisherBean implements javax.ejb.SessionBean {
 				mensaje.setText(message);
 				// Lo enviamos
 				enviaACola.send(mensaje);
-				System.out.println("QueuePublisherBean: Mensaje enviado: " + mensaje.getText());
+				System.out.println("[QueuePublisherBean]: Mensaje enviado: " + mensaje.getText());
 				// Cerramos la conexion
 				conexion.close();
 			} catch (NamingException e){

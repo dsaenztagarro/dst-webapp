@@ -133,7 +133,7 @@
                      * Auto generated method signature
                      * 
                      * @see com.davlanca.webapp.ws.Axis2ServiceAxis2ServiceHttpSoap12Endpoint#createPeople
-                     * @param createPeople70
+                     * @param createPeople50
                     
                      */
 
@@ -141,7 +141,7 @@
 
                             public  com.davlanca.webapp.model.xsd.People createPeople(
 
-                            java.lang.String args071,java.lang.String args172)
+                            java.lang.String args051,java.lang.String args152)
                         
 
                     throws java.rmi.RemoteException
@@ -167,8 +167,8 @@
               org.apache.axiom.soap.SOAPEnvelope env = null;
                     com.davlanca.webapp.ws.CreatePeople dummyWrappedType = null;
                                                     env = toEnvelope(getFactory(_operationClient.getOptions().getSoapVersionURI()),
-                                                    args071,
-                                                    args172,
+                                                    args051,
+                                                    args152,
                                                     dummyWrappedType,
                                                     optimizeContent(new javax.xml.namespace.QName("http://ws.webapp.davlanca.com",
                                                     "createPeople")));

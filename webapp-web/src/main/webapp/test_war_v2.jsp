@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body onload="test_war_init();">
-	<h3>WAR jsp - JSP test</h3>
+	<h3>WAR jsp - JSP test - version2</h3>
 </body>
 </html>

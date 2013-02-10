@@ -1,21 +1,21 @@
 
 /**
- * Axis2ServiceAxis2ServiceHttpEndpointStub.java
+ * Axis2ServiceStub.java
  *
  * This file was auto-generated from WSDL
  * by the Apache Axis2 version: 1.6.1  Built on : Aug 31, 2011 (12:22:40 CEST)
  */
-        package com.davlanca.webapp.ws;
+        package com.davlanca.webapp.test.ws.client;
 
         
 
         /*
-        *  Axis2ServiceAxis2ServiceHttpEndpointStub java implementation
+        *  Axis2ServiceStub java implementation
         */
 
         
-        public class Axis2ServiceAxis2ServiceHttpEndpointStub extends org.apache.axis2.client.Stub
-        {
+        public class Axis2ServiceStub extends org.apache.axis2.client.Stub
+        implements Axis2Service{
         protected org.apache.axis2.description.AxisOperation[] _operations;
 
         //hashmaps to keep the fault mapping
@@ -71,7 +71,7 @@
       *Constructor that takes in a configContext
       */
 
-    public Axis2ServiceAxis2ServiceHttpEndpointStub(org.apache.axis2.context.ConfigurationContext configurationContext,
+    public Axis2ServiceStub(org.apache.axis2.context.ConfigurationContext configurationContext,
        java.lang.String targetEndpoint)
        throws org.apache.axis2.AxisFault {
          this(configurationContext,targetEndpoint,false);
@@ -81,7 +81,7 @@
    /**
      * Constructor that takes in a configContext  and useseperate listner
      */
-   public Axis2ServiceAxis2ServiceHttpEndpointStub(org.apache.axis2.context.ConfigurationContext configurationContext,
+   public Axis2ServiceStub(org.apache.axis2.context.ConfigurationContext configurationContext,
         java.lang.String targetEndpoint, boolean useSeparateListener)
         throws org.apache.axis2.AxisFault {
          //To populate AxisService
@@ -95,13 +95,16 @@
                 targetEndpoint));
         _serviceClient.getOptions().setUseSeparateListener(useSeparateListener);
         
+            //Set the soap version
+            _serviceClient.getOptions().setSoapVersionURI(org.apache.axiom.soap.SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI);
+        
     
     }
 
     /**
      * Default Constructor
      */
-    public Axis2ServiceAxis2ServiceHttpEndpointStub(org.apache.axis2.context.ConfigurationContext configurationContext) throws org.apache.axis2.AxisFault {
+    public Axis2ServiceStub(org.apache.axis2.context.ConfigurationContext configurationContext) throws org.apache.axis2.AxisFault {
         
                     this(configurationContext,"http://localhost:8080/axis2/services/Axis2Service" );
                 
@@ -110,7 +113,7 @@
     /**
      * Default Constructor
      */
-    public Axis2ServiceAxis2ServiceHttpEndpointStub() throws org.apache.axis2.AxisFault {
+    public Axis2ServiceStub() throws org.apache.axis2.AxisFault {
         
                     this("http://localhost:8080/axis2/services/Axis2Service" );
                 
@@ -119,7 +122,7 @@
     /**
      * Constructor taking the target endpoint
      */
-    public Axis2ServiceAxis2ServiceHttpEndpointStub(java.lang.String targetEndpoint) throws org.apache.axis2.AxisFault {
+    public Axis2ServiceStub(java.lang.String targetEndpoint) throws org.apache.axis2.AxisFault {
         this(null,targetEndpoint);
     }
 
@@ -129,8 +132,8 @@
                     /**
                      * Auto generated method signature
                      * 
-                     * @see com.davlanca.webapp.ws.Axis2ServiceAxis2ServiceHttpEndpoint#createPeople
-                     * @param createPeople40
+                     * @see com.davlanca.webapp.test.ws.client.Axis2Service#createPeople
+                     * @param createPeople0
                     
                      */
 
@@ -138,7 +141,7 @@
 
                             public  com.davlanca.webapp.model.xsd.People createPeople(
 
-                            java.lang.String args041,java.lang.String args142)
+                            java.lang.String args01,java.lang.String args12)
                         
 
                     throws java.rmi.RemoteException
@@ -147,22 +150,12 @@
               org.apache.axis2.context.MessageContext _messageContext = null;
               try{
                org.apache.axis2.client.OperationClient _operationClient = _serviceClient.createClient(_operations[0].getName());
-              _operationClient.getOptions().setAction("\"\"");
+              _operationClient.getOptions().setAction("urn:createPeople");
               _operationClient.getOptions().setExceptionToBeThrownOnSOAPFault(true);
 
               
               
                   addPropertyToOperationClient(_operationClient,org.apache.axis2.description.WSDL2Constants.ATTR_WHTTP_QUERY_PARAMETER_SEPARATOR,"&");
-              
-                  addPropertyToOperationClient(_operationClient,org.apache.axis2.description.WSDL2Constants.ATTR_WHTTP_LOCATION,"createPeople");
-              
-                  addPropertyToOperationClient(_operationClient,org.apache.axis2.Constants.Configuration.ENABLE_REST,true);
-              
-                  addPropertyToOperationClient(_operationClient,org.apache.axis2.Constants.Configuration.HTTP_METHOD,"POST");
-              
-                  addPropertyToOperationClient(_operationClient,org.apache.axis2.Constants.Configuration.CONTENT_TYPE,"text/xml");
-              
-                  addPropertyToOperationClient(_operationClient,org.apache.axis2.Constants.Configuration.MESSAGE_TYPE,"text/xml");
               
 
               // create a message context
@@ -174,8 +167,8 @@
               org.apache.axiom.soap.SOAPEnvelope env = null;
                     com.davlanca.webapp.ws.CreatePeople dummyWrappedType = null;
                                                     env = toEnvelope(getFactory(_operationClient.getOptions().getSoapVersionURI()),
-                                                    args041,
-                                                    args142,
+                                                    args01,
+                                                    args12,
                                                     dummyWrappedType,
                                                     optimizeContent(new javax.xml.namespace.QName("http://ws.webapp.davlanca.com",
                                                     "createPeople")));

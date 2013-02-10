@@ -14,11 +14,16 @@
 
 	<properties>
 		<axis2.wsdl.dir>src/main/resources/wsdl/</axis2.wsdl.dir>
-		<axis2.wsdl.fileName>WSComponentService_2_0.wsdl</axis2.wsdl.fileName>
+		<axis2.wsdl.fileName>WSComponentService_1_1.wsdl</axis2.wsdl.fileName>
 		<axis2.service.name>Axis2Service</axis2.service.name>
 		<axis2.service.className>com.davlanca.webapp.ws.WSComponentService</axis2.service.className>
+		<axis2.service.version>1.1</axis2.service.version>
+		<axis2.service.file.version>1_0</axis2.service.file.version>
 		<axis2.server.stub.dir>${project.build.directory}/axis2/server-stub/src/</axis2.server.stub.dir>
 		<axis2.client.stub.dir>${project.build.directory}/axis2/client-stub/src/</axis2.client.stub.dir>
+		<axis2.service.test.endpoint>http://localhost:8080/eartest-web/services/WSComponentService</axis2.service.test.endpoint>
+		<axis2.test.case.dir>src/test/java/</axis2.test.case.dir>
+		
 		<axis2.service.xml.dir>${workspace.dir}/webapp/webapp-web/src/main/webapp/WEB-INF/services/WSComponentService/META-INF/</axis2.service.xml.dir>
 		<axis2.http.port>8080</axis2.http.port>
 		<axis2.https.port>8443</axis2.https.port>
@@ -110,7 +115,7 @@
 									<arg line="-of ${axis2.wsdl.fileName}" />
 									<arg line="-u literal" />
 									<arg line="-style DOCUMENT" />
-									<arg line="-wv 2.0" />
+									<arg line="-wv ${axis2.service.version}" />
 									<arg line="-sn ${axis2.service.name}" />
 									<arg line="-cn ${axis2.service.className}" />
 								</java>
@@ -126,12 +131,11 @@
 									<arg line="-ssi" />
 									<arg line="-ap" />
 									<arg line="-g" />
-									<arg line="-wv 2.0" />
+									<arg line="-wv ${axis2.service.version}" />
 									<arg line="-l java" />
 									<arg line="-p com.davlanca.webapp.ws" />
 									<arg line="-d adb" />
 									<arg line="-f" />
-									<arg line="-t" /><!-- emit junit testcase class for web service -->
 									<arg line="-o ${axis2.server.stub.dir}" />
 								</java>
 
@@ -141,7 +145,21 @@
 									<arg line="-s" />
 									<arg line="-uw" />
 									<arg line="-u" />
-									<arg line="-wv 2.0" />
+									<arg line="-wv ${axis2.service.version}" />
+									<arg line="-l java" />
+									<arg line="-p com.davlanca.webapp.test.ws.client" />
+									<arg line="-d adb" />
+									<arg line="-f" />
+									<arg line="-o ${axis2.test.case.dir}" />
+								</java>
+								
+								<java classname="org.apache.axis2.wsdl.WSDL2Java" fork="true"
+									classpathref="compile_classpath">
+									<arg line="-uri ${axis2.wsdl.dir}${axis2.wsdl.fileName}" />
+									<arg line="-s" />
+									<arg line="-uw" />
+									<arg line="-u" />
+									<arg line="-wv ${axis2.service.version}" />
 									<arg line="-l java" />
 									<arg line="-p com.davlanca.webapp.ws" />
 									<arg line="-d adb" />
@@ -204,6 +222,23 @@
 						</configuration>
 					</execution>
 					
+					<execution>
+						<id>replace-test-endpoint</id>
+						<phase>process-sources</phase>
+						<goals><goal>replace</goal></goals>
+						<configuration>
+							<file>${axis2.server.stub.dir}/services.xml</file>
+							<regex>false</regex>
+							<replacements>
+								<replacement>
+									<token>"http://localhost:8080/axis2/services/Axis2Service"</token>
+									<value>"${axis2.service.test.endpoint}"</value>
+								</replacement>
+							</replacements>
+						</configuration>
+					</execution>					
+					
+					
 				</executions>
 			</plugin>
 			
@@ -230,12 +265,42 @@
 								<copy todir="${axis2.service.xml.dir}" overwrite="true">
 									<fileset dir="${axis2.server.stub.dir}" includes="services.xml" />
 								</copy>
+
+								<copy tofile="${axis2.service.xml.dir}/service.wsdl" overwrite="true">
+									<fileset dir="${axis2.server.stub.dir}" includes="Axis2Service.wsdl" />
+								</copy>
 								
 							</tasks>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
+
+     	<!-- MyJRebel -->
+			<plugin>
+				<groupId>org.zeroturnaround</groupId>
+				<artifactId>jrebel-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>generate-rebel-xml</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+				  <!--
+				    root is 2 directoris away from jar/war modules
+				  -->
+				  <relativePath>../../</relativePath>
+				  <!--
+				    use a system property for specifing root directory (note the double $)
+				    start your application with -Drebel.root=c:/projects/
+				  -->
+				  <rootPath>$${rebel.root}</rootPath>
+				</configuration>				
+			</plugin>   
 
 		</plugins>
 

@@ -24,7 +24,7 @@ public class QueueMessageDrivenBean implements MessageDrivenBean, MessageListene
     public void onMessage(Message message) {
         try {
             TextMessage mess = (TextMessage)message;
-            System.out.println( "QueueMessageDrivenBean: Message Received: "+mess.getText());
+            System.out.println( "[QueueMessageDrivenBean]: Message Received: "+mess.getText());
         }catch(JMSException ex){
             System.err.println("Exception caught: "+ex);
         }

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://ws.webapp.davlanca.com" xmlns:ns1="http://org.apache.axis2/xsd" xmlns:ns="http://ws.webapp.davlanca.com" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:ax21="http://model.webapp.davlanca.com/xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/">
+  <wsdl:types>
+    <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://ws.webapp.davlanca.com" xmlns:ax22="http://model.webapp.davlanca.com/xsd">
+            <xs:import namespace="http://model.webapp.davlanca.com/xsd"/>
+            <xs:element name="createPeople">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="args0" nillable="true" type="xs:string"/>
+                        <xs:element minOccurs="0" name="args1" nillable="true" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="createPeopleResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="return" nillable="true" type="ax21:People"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
+    <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://model.webapp.davlanca.com/xsd">
+            <xs:complexType name="People">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="firstName" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="lastName" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="peopleID" type="xs:int"/>
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="createPeopleResponse">
+    <wsdl:part name="parameters" element="ns:createPeopleResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createPeopleRequest">
+    <wsdl:part name="parameters" element="ns:createPeople">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="Axis2ServicePortType">
+    <wsdl:operation name="createPeople">
+      <wsdl:input message="ns:createPeopleRequest" wsaw:Action="urn:createPeople">
+    </wsdl:input>
+      <wsdl:output message="ns:createPeopleResponse" wsaw:Action="urn:createPeopleResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="Axis2ServiceHttpBinding" type="ns:Axis2ServicePortType">
+    <http:binding verb="POST"/>
+    <wsdl:operation name="createPeople">
+      <http:operation location="createPeople"/>
+      <wsdl:input>
+        <mime:content part="parameters" type="text/xml"/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content part="parameters" type="text/xml"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="Axis2ServiceSoap11Binding" type="ns:Axis2ServicePortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="createPeople">
+      <soap:operation soapAction="urn:createPeople" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="Axis2ServiceSoap12Binding" type="ns:Axis2ServicePortType">
+    <soap12:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="createPeople">
+      <soap12:operation soapAction="urn:createPeople" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Axis2Service">
+    <wsdl:port name="Axis2ServiceHttpSoap11Endpoint" binding="ns:Axis2ServiceSoap11Binding">
+      <soap:address location="http://localhost:8080/axis2/services/Axis2Service"/>
+    </wsdl:port>
+    <wsdl:port name="Axis2ServiceHttpEndpoint" binding="ns:Axis2ServiceHttpBinding">
+      <http:address location="http://localhost:8080/axis2/services/Axis2Service"/>
+    </wsdl:port>
+    <wsdl:port name="Axis2ServiceHttpSoap12Endpoint" binding="ns:Axis2ServiceSoap12Binding">
+      <soap12:address location="http://localhost:8080/axis2/services/Axis2Service"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

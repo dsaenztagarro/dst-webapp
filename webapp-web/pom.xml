@@ -61,6 +61,18 @@
 						<goals>
 							<goal>generate</goal>
 						</goals>
+						<configuration>
+							<web>
+								<resources>
+									<resource>
+				          <!--
+				            Empty resource element marks default configuration. By
+				            default it is placed first in generated configuration.
+				          -->									
+									</resource>
+								</resources>
+							</web>
+						</configuration>
 					</execution>
 				</executions>
 				<configuration>

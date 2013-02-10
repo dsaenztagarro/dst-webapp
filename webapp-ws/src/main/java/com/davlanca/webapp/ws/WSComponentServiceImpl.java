@@ -9,8 +9,8 @@ public class WSComponentServiceImpl extends Axis2ServiceSkeleton {
 	public People createPeople(String firstName, String lastName) {
 		People people = new People();
 		people.setPeopleID(123);
-		people.setFirstName(firstName+"Updated");
-		people.setLastName(lastName+"Updated");
+		people.setFirstName(firstName+"-Updated Again");
+		people.setLastName(lastName+"-Updated Again");
 		return people;
 	} 
 }

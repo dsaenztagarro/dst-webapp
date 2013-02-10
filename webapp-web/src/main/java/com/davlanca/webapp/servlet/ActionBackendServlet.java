@@ -30,6 +30,8 @@ public class ActionBackendServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String action = request.getParameter("action");
+
+		String result = "";
 		
 		if (action!=null) {
 			HashMap<String, Object> cim = new HashMap<String,Object>();
@@ -40,19 +42,22 @@ public class ActionBackendServlet extends HttpServlet {
 			WebController webController = new WebController();
 			com = webController.process(cim);
 
-			String result = (String)com.get("result");
+			result = (String)com.get("result");
 			
-			PrintWriter out = null;
-			response.setContentType("text/xml;charset=UTF-8");
-			try {
-				out = response.getWriter();
-				if (out != null) {
-					out.print(result);
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+		} else {
+			result = "Error: Action Required.";
 		}
+		
+		PrintWriter out = null;
+		response.setContentType("text/xml;charset=UTF-8");
+		try {
+			out = response.getWriter();
+			if (out != null) {
+				out.print(result);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}		
 	}
 
 	/**
